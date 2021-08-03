@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: axon_text
+  datasource:
+    url: jdbc:mysql://localhost:3306/event?useUnicode=true&autoReconnect=true&rewriteBatchedStatements=TRUE
+    username: root
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.MySQL57Dialect
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    cloud:
+      stream.bindings:
+        account-events: #
+          destination: account-events # 这个对应 rabbit 中的 channel
+          contentType: application/json # 这个指定传输类型，其实可以默认指定，但是目前每个地方都写了，所以统一下
+        account-events-input:
+          destination: account-events
+          contentType: application/json
+          group: event-sourcing-service
+          durableSubscription: true
+      stream.rabbit.bindings.account-events-input.consumer:
+        autoBindDlq: true
+        republishToDlq: true
+        deadLetterQueueName: account-error.dlq
+
+logging:
+  level.org:
+    springframework:
+      web: INFO
+      cloud.sleuth: INFO
+    apache.ibatis: DEBUG
+    java.sql: DEBUG
+    hibernate:
+      SQL: DEBUG
+      type.descriptor.sql: TRACE
+
+axon:
+  serializer:
+    general: jackson
+  distributed:
+    enabled: true
+    spring-cloud:
+      fallback-to-http-get: true
+      fallback-url: /axon-routing
+
