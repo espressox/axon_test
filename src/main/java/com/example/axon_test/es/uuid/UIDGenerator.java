@@ -1,4 +1,4 @@
-package com.example.axon_test.helper;
+package com.example.axon_test.es.uuid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

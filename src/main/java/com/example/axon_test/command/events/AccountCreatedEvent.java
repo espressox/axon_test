@@ -1,6 +1,5 @@
 package com.example.axon_test.command.events;
 
-import com.example.axon_test.common.domain.AccountId;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -13,7 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class AccountCreatedEvent extends AbstractEvent implements AccountId {
+public class AccountCreatedEvent extends AbstractEvent  {
     private String accountName;
     private BigDecimal amount;
 

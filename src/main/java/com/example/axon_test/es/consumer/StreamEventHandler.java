@@ -1,4 +1,4 @@
-package com.example.axon_test.config;
+package com.example.axon_test.es.consumer;
 
 import java.lang.annotation.*;
 

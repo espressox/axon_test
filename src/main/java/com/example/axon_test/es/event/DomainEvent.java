@@ -1,4 +1,4 @@
-package com.example.axon_test.common.event;
+package com.example.axon_test.es.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 
+/**
+ * @author xin
+ */
 @Getter
 @Setter
 @Slf4j

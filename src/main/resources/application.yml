@@ -1,6 +1,6 @@
 spring:
   application:
-    name: axon_text
+    name: axon_test
   datasource:
     url: jdbc:mysql://localhost:3306/event?useUnicode=true&autoReconnect=true&rewriteBatchedStatements=TRUE
     username: root
@@ -14,20 +14,12 @@ spring:
     port: 5672
     username: guest
     password: guest
-    cloud:
-      stream.bindings:
-        account-events: #
-          destination: account-events # 这个对应 rabbit 中的 channel
-          contentType: application/json # 这个指定传输类型，其实可以默认指定，但是目前每个地方都写了，所以统一下
-        account-events-input:
-          destination: account-events
-          contentType: application/json
-          group: event-sourcing-service
-          durableSubscription: true
-      stream.rabbit.bindings.account-events-input.consumer:
-        autoBindDlq: true
-        republishToDlq: true
-        deadLetterQueueName: account-error.dlq
+  cloud:
+    stream:
+      bindings:
+        receive1-in-0.destination: axon-d-1
+    function:
+      definition: supplier;receive1;
 
 logging:
   level.org:

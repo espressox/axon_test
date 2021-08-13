@@ -1,4 +1,4 @@
-package com.example.axon_test.helper;
+package com.example.axon_test.es.uuid;
 
 
 import lombok.Getter;

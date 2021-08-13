@@ -1,5 +1,8 @@
-package com.example.axon_test.config;
+package com.example.axon_test.es.health;
 
+import com.example.axon_test.config.CustomDomainEventEntry;
+import com.example.axon_test.config.CustomDomainEventEntryRepository;
+import com.example.axon_test.es.producer.DomainEventPublisher;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
@@ -19,7 +22,7 @@ import java.util.Collection;
 public class ScheduleService {
 
     private final CustomDomainEventEntryRepository customDomainEventEntryRepository;
-    private final EventPublisher EventPublisher;
+    private final DomainEventPublisher DomainEventPublisher;
 
     @Scheduled(cron = "0 0 12 * * ?")
     @SchedulerLock(name = "failedMessageDiscoveryTask")
@@ -42,7 +45,7 @@ public class ScheduleService {
     private void sendFailedMessage(Collection<CustomDomainEventEntry> failedEvents) {
 
         failedEvents.forEach(e -> {
-            EventPublisher.sendEvent(e);
+            DomainEventPublisher.sendEvent(e);
             e.setSent(true);
             customDomainEventEntryRepository.save(e);
         });

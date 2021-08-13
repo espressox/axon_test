@@ -1,6 +1,7 @@
-package com.example.axon_test.controller;
+package com.example.axon_test.es.health;
 
-import com.example.axon_test.config.ScheduleService;
+import com.example.axon_test.es.health.ScheduleService;
+import com.example.axon_test.service.AccountViewService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +39,7 @@ public class DataRepairController {
         if (!StringUtils.equals(secret, SECRET)) {
             return;
         }
-        accountViewService.updateViewFromAggregateById(aggregateIdentifier, Instant.now());
+//        accountViewService.updateViewFromAggregateById(aggregateIdentifier, Instant.now());
     }
 }
 /**/

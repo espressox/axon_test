@@ -1,6 +1,5 @@
 package com.example.axon_test.command.events;
 
-import com.example.axon_test.common.domain.AccountId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class AccountUpdatedEvent extends AbstractEvent implements AccountId {
+public class AccountUpdatedEvent extends AbstractEvent {
     private String accountName;
 
     public AccountUpdatedEvent(Long identifier, String accountName) {

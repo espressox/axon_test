@@ -1,9 +1,9 @@
-package com.example.axon_test.helper;
+package com.example.axon_test.es.uuid;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cloud.client.serviceregistry.Registration;
+//import org.springframework.cloud.client.serviceregistry.Registration;
 import org.springframework.stereotype.Service;
 
 import java.net.Inet4Address;
@@ -21,7 +21,7 @@ import java.util.Enumeration;
 public class WorkerIdService {
 
     private final WorkerIdRepository workerIdRepository;
-    private final Registration registration;
+//    private final Registration registration;
 
     Long getWorkerId() {
 
@@ -35,8 +35,8 @@ public class WorkerIdService {
 
         workerId = new WorkerId();
         // 如果你的 Spring Boot 版本 >= 2.1.0 并且使用的 Discovery 提供了该方法的实现则可以直接使用
-         workerId.setServiceKey(registration.getInstanceId());
-//        workerId.setServiceKey(serviceKey);
+//         workerId.setServiceKey(registration.getInstanceId());
+        workerId.setServiceKey(serviceKey);
         workerIdRepository.save(workerId);
         return workerId.getId() % (SnowFlake.MAX_MACHINE_NUM + 1);
     }

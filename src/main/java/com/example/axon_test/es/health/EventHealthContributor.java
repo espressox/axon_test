@@ -1,10 +1,14 @@
-package com.example.axon_test.config;
+package com.example.axon_test.es.health;
 
+import com.example.axon_test.config.CustomDomainEventEntryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.actuate.info.Info;
 import org.springframework.boot.actuate.info.InfoContributor;
 
+/**
+ * @author xin
+ */
 @Component
 @AllArgsConstructor
 public class EventHealthContributor implements InfoContributor {

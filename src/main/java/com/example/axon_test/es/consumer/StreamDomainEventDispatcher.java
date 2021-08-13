@@ -1,8 +1,6 @@
-package com.example.axon_test.config;
+package com.example.axon_test.es.consumer;
 
-import com.example.axon_test.common.event.DomainEvent;
-import com.example.axon_test.stream.exception.StreamEventSequenceException;
-import com.example.axon_test.stream.exception.StreamHandlerException;
+import com.example.axon_test.es.event.DomainEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +21,9 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author xin
+ */
 @Slf4j
 @Component
 @AllArgsConstructor

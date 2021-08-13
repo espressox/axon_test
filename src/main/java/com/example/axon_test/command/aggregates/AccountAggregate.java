@@ -3,7 +3,6 @@ package com.example.axon_test.command.aggregates;
 import com.example.axon_test.command.commands.CreateAccountCommand;
 import com.example.axon_test.command.commands.UpdateAccountCommand;
 import com.example.axon_test.command.commands.WithdrawMoneyCommand;
-import com.example.axon_test.common.domain.AccountId;
 import com.example.axon_test.command.events.AccountCreatedEvent;
 import com.example.axon_test.command.events.AccountUpdatedEvent;
 import com.example.axon_test.command.events.MoneyWithdrawEvent;
@@ -28,7 +27,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Aggregate(repository = "accountAggregateRepository")
-public class AccountAggregate implements AccountId{
+public class AccountAggregate {
     @AggregateIdentifier
     private Long identifier;
     private String accountName;

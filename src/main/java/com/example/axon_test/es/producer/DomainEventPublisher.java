@@ -1,16 +1,22 @@
-package com.example.axon_test.config;
+package com.example.axon_test.es.producer;
 
-import com.example.axon_test.common.event.DomainEvent;
+import com.example.axon_test.config.CustomDomainEventEntry;
+import com.example.axon_test.es.event.DomainEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
+import java.util.function.Supplier;
 
 /**
  * @author xin
@@ -18,9 +24,9 @@ import java.util.HashMap;
 @Component
 @AllArgsConstructor
 @Slf4j
-public class EventPublisher {
+public class DomainEventPublisher {
 
-//    private final OutputChannel outputChannel;
+    private final Sinks.Many<Message<?>> processor = Sinks.many().multicast().onBackpressureBuffer();
 
     public void sendEvent(DomainEvent event) {
 
@@ -35,6 +41,26 @@ public class EventPublisher {
 //            messageBuilder.setHeader("messageType", "eventSourcing");
 //        }
 //        outputChannel.contract().send(messageBuilder.build());
+
+        String eventType = StringUtils.substringAfterLast(event.getPayloadType(), ".");
+        String destinationName = "axon-d-1";
+        Message<?> message = MessageBuilder.withPayload(event)
+                .setHeader("eventType", eventType)
+                .setHeader("spring.cloud.stream.sendto.destination", destinationName).build();
+
+        Sinks.EmitResult em = this.getProcessor().tryEmitNext(message);
+    }
+
+    public Flux<Message<?>> getProcessorFlux() {
+        return processor.asFlux();
+    }
+    public Sinks.Many<Message<?>> getProcessor() {
+        return processor;
+    }
+
+    @Bean
+    public Supplier<Flux<Message<?>>> supplier() {
+        return this::getProcessorFlux;
     }
 
     public void sendEvent(CustomDomainEventEntry event) {
@@ -55,7 +81,7 @@ public class EventPublisher {
             return;
         }
 
-        DomainEvent domainEvent = new DomainEvent(
+        DomainEvent<HashMap, HashMap> domainEvent = new DomainEvent<>(
                 event.getType(),
                 event.getAggregateIdentifier(),
                 event.getPayload().getType().getName(),

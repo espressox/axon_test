@@ -1,11 +1,11 @@
 package com.example.axon_test.command.commands;
 
 
-import com.example.axon_test.common.domain.AccountId;
+import com.example.axon_test.es.meta.MetaDataInterface;
+import com.example.axon_test.es.meta.MetaDataUser;
 import lombok.*;
-import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-import java.math.BigDecimal;
+import java.util.HashMap;
 
 
 /**
@@ -15,12 +15,12 @@ import java.math.BigDecimal;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class UpdateAccountCommand extends AbstractCommand implements AccountId {
+public class UpdateAccountCommand extends AbstractCommand {
 
     private String accountName;
 
-    public UpdateAccountCommand(Long identifier, String accountNamee) {
-        super(identifier);
+    public UpdateAccountCommand(Long identifier, String accountNamee, HashMap<String, MetaDataInterface> metaData) {
+        super(identifier, false,  metaData);
         this.accountName = accountName;
     }
 

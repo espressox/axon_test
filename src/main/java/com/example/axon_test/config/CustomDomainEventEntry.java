@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 /**
  * @author xin
  */
-@Entity(name = "DomainEventEntry")
+@Entity
 @Getter
 @Setter
-@Table(indexes = @Index(columnList = "aggregateIdentifier,sequenceNumber", unique = true))
+@Table(name = "DomainEventEntry", indexes = @Index(columnList = "aggregateIdentifier,sequenceNumber", unique = true))
 @EntityListeners(CustomDomainEventEntryListener.class)
 public class CustomDomainEventEntry extends AbstractSequencedDomainEventEntry<byte[]> {
 

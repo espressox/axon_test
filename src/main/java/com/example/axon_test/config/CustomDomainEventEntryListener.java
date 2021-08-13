@@ -1,5 +1,6 @@
 package com.example.axon_test.config;
 
+import com.example.axon_test.es.producer.DomainEventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,12 +21,12 @@ import java.util.concurrent.CompletableFuture;
 public class CustomDomainEventEntryListener {
     private static CustomDomainEventEntryRepository customDomainEventEntryRepository;
 
-    private static EventPublisher eventPublisher;
+    private static DomainEventPublisher domainEventPublisher;
 
     @Autowired
-    public void init(CustomDomainEventEntryRepository customDomainEventEntryRepository, EventPublisher eventPublisher) {
-        CustomDomainEventEntryListener.customDomainEventEntryRepository = customDomainEventEntryRepository;
-        CustomDomainEventEntryListener.eventPublisher = eventPublisher;
+    public void init(CustomDomainEventEntryRepository customDomainEventEntryRepository, DomainEventPublisher domainEventPublisher) {
+        this.customDomainEventEntryRepository = customDomainEventEntryRepository;
+        this.domainEventPublisher = domainEventPublisher;
     }
 
     @PostPersist
@@ -47,7 +48,7 @@ public class CustomDomainEventEntryListener {
         CustomDomainEventEntry eventEntry = customDomainEventEntryRepository.findByEventIdentifier(identifier);
 
         if (!eventEntry.isSent()) {
-            eventPublisher.sendEvent(eventEntry);
+            domainEventPublisher.sendEvent(eventEntry);
             eventEntry.setSent(true);
             customDomainEventEntryRepository.save(eventEntry);
         }

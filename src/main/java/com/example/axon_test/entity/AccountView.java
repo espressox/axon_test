@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
@@ -29,10 +30,8 @@ public class AccountView implements Serializable {
     @Version
     private Long version;
 
-    @NotBlank
     private String accountName;
 
-    @NotBlank
     private BigDecimal balance;
 
     @Override

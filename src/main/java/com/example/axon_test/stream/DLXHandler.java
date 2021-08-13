@@ -1,4 +1,4 @@
-package com.example.axon_test.config;
+package com.example.axon_test.stream;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -12,14 +12,14 @@ import org.springframework.stereotype.Component;
 /**
  * @author xin
  */
-@Component
+//@Component
 public class DLXHandler implements ApplicationListener<ContextRefreshedEvent>, ApplicationContextAware {
 
     private final RabbitTemplate rabbitTemplate;
 
     private ApplicationContext applicationContext;
 
-    private static final String DLQ = "contract-error.dlq";
+    private static final String DLQ = "account-error.dlq";
 
     @Autowired
     public DLXHandler(RabbitTemplate rabbitTemplate) {

@@ -1,4 +1,4 @@
-package com.example.axon_test.stream.exception;
+package com.example.axon_test.es.consumer;
 
 /**
  * @author xin
