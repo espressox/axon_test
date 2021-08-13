@@ -33,6 +33,12 @@ public class AccountAggregate {
     private String accountName;
     private BigDecimal balance;
 
+    /**
+     * 这里CommandHandler 的注解写在了构造方法上，那么在处理这个 Command 的时候，将会自动创建一个对象。
+     * 另外这里的 MetaData 是在 command 发送的时候顺带的附加信息，可以是用户信息，机器信息等等自定义信息。
+     * @param command CreateAccountCommand
+     * @param metaData MetaData
+     */
     @CommandHandler
     public AccountAggregate(CreateAccountCommand command, MetaData metaData) {
         log.info("命令处理程序 " + command);
