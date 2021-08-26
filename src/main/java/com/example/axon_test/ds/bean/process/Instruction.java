@@ -1,5 +1,7 @@
 package com.example.axon_test.ds.bean.process;
 
+import com.example.axon_test.ds.bean.BeanWire;
+
 /**
  *
  * @author XinWei

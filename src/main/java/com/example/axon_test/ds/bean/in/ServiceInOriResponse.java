@@ -3,7 +3,7 @@ package com.example.axon_test.ds.bean.in;
 
 
 import com.example.axon_test.ds.bean.ResultBase;
-import com.example.axon_test.ds.bean.process.BeanWire;
+import com.example.axon_test.ds.bean.BeanWire;
 import lombok.Getter;
 import lombok.Setter;
 

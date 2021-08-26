@@ -1,14 +1,10 @@
 package com.example.axon_test.es.health;
 
-import com.example.axon_test.es.health.ScheduleService;
-import com.example.axon_test.service.AccountViewService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
 
 /**
  * @author xin

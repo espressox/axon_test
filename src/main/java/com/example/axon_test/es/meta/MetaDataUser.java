@@ -1,6 +1,5 @@
 package com.example.axon_test.es.meta;
 
-import com.example.axon_test.stream.channel.ChannelDefinition;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

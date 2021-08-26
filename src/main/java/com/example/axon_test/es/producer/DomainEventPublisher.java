@@ -1,6 +1,6 @@
 package com.example.axon_test.es.producer;
 
-import com.example.axon_test.config.CustomDomainEventEntry;
+import com.example.axon_test.es.config.CustomDomainEventEntry;
 import com.example.axon_test.es.event.DomainEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;

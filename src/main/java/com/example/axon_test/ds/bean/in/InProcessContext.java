@@ -1,7 +1,7 @@
 package com.example.axon_test.ds.bean.in;
 
 
-import com.example.axon_test.ds.bean.process.BeanWire;
+import com.example.axon_test.ds.bean.BeanWire;
 import com.example.axon_test.ds.bean.process.ProcessContext;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +28,7 @@ public class InProcessContext extends ProcessContext {
     /**
      * 请求:当前业务请求
      */
-    private ServiceInModelRequest serviceInModelRequest;
+    private ServiceInModelRequest<?> serviceInModelRequest;
 
     /**
      * 请求的对应响应:当前业务响应

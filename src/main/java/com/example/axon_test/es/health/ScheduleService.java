@@ -1,7 +1,7 @@
 package com.example.axon_test.es.health;
 
-import com.example.axon_test.config.CustomDomainEventEntry;
-import com.example.axon_test.config.CustomDomainEventEntryRepository;
+import com.example.axon_test.es.config.CustomDomainEventEntry;
+import com.example.axon_test.es.config.CustomDomainEventEntryRepository;
 import com.example.axon_test.es.producer.DomainEventPublisher;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

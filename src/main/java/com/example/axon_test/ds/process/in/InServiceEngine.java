@@ -1,6 +1,8 @@
 package com.example.axon_test.ds.process.in;
 
 ;
+import com.alibaba.cola.domain.DomainFactory;
+import com.example.axon_test.domain.ApiToModelDef;
 import com.example.axon_test.ds.bean.ResultEnum;
 import com.example.axon_test.ds.bean.ServiceAPIKeys;
 import com.example.axon_test.ds.bean.in.*;
@@ -14,7 +16,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -49,7 +50,6 @@ public class InServiceEngine extends ServiceEngineTemplate {
         InProcessContext inProcessContext = instruction.getInstruction(InProcessContext.class);
         ServiceInOriRequest serviceInOriRequest = instruction.getInstruction(ServiceInOriRequest.class);
 
-        ServiceInModelRequest serviceInModelRequest = null;
         String serviceMsg = null;
         String method = null;
         try {
@@ -57,17 +57,18 @@ public class InServiceEngine extends ServiceEngineTemplate {
             serviceMsg = serviceInOriRequest.getRequestParams().get(ServiceAPIKeys.ServiceInServiceKeys.BIZ_CONTENT);
             method = serviceInOriRequest.getRequestParams().get(ServiceAPIKeys.METHOD);
 
-            serviceInModelRequest = ServiceInModelReqFactory
-                    .buildRequest(serviceInOriRequest.getRequestParams(), serviceMsg);
+            String classForName = ApiToModelDef.getModelByApi(method);
+            ServiceInModelRequest<?> serviceInModelRequest = ServiceInModelReqFactory
+                    .buildRequest(serviceInOriRequest.getRequestParams(), serviceMsg, DomainFactory.create(Class.forName(classForName)));
 
             inProcessContext.setServiceInModelRequest(serviceInModelRequest);
             log.info("InServiceEngine Original Request[" + serviceInOriRequest + "]");
         } catch (Exception e) {
-            if (null == serviceInModelRequest) {
-                serviceInModelRequest = new ServiceInModelRequest();
-                serviceInModelRequest.setMethod(method);
-                serviceInModelRequest.setBizContent(serviceMsg);
-                inProcessContext.setServiceInModelRequest(serviceInModelRequest);
+            if (null == inProcessContext.getServiceInModelRequest()) {
+                ServiceInModelRequest<String> modelRequest = new ServiceInModelRequest<>();
+                modelRequest.setMethod(method);
+                modelRequest.setBizContent(serviceMsg);
+                inProcessContext.setServiceInModelRequest(modelRequest);
             }
             log.error("InServiceEngine ERROR[" + e.getMessage() + "]");
             throw new ProcessException(e, ResultEnum.SYSTEM_ERROR);
@@ -84,7 +85,7 @@ public class InServiceEngine extends ServiceEngineTemplate {
     public void doAction(Instruction instruction) {
         //1.获取请求
         InProcessContext inProcessContext = instruction.getInstruction(InProcessContext.class);
-        ServiceInModelRequest serviceInModelRequest = inProcessContext.getInstruction(ServiceInModelRequest.class);
+        ServiceInModelRequest<?> serviceInModelRequest = inProcessContext.getInstruction(ServiceInModelRequest.class);
         //2.获取服务
         ServiceExecutor serviceExecutor = executorMap.get(serviceInModelRequest.getMethod());
 
@@ -159,7 +160,7 @@ public class InServiceEngine extends ServiceEngineTemplate {
 
         InProcessContext inProcessContext = instruction
                 .getInstruction(InProcessContext.class);
-        ServiceInModelRequest serviceInModelRequest = inProcessContext
+        ServiceInModelRequest<?> serviceInModelRequest = inProcessContext
                 .getInstruction(ServiceInModelRequest.class);
 
         String resultCode;
@@ -167,7 +168,7 @@ public class InServiceEngine extends ServiceEngineTemplate {
         String resultMsg;
 
         if (null == serviceInModelRequest) {
-            serviceInModelRequest = new ServiceInModelRequest();
+            serviceInModelRequest = new ServiceInModelRequest<>();
             serviceInModelRequest.setMethod("");
         }
 

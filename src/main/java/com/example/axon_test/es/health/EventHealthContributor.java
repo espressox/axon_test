@@ -1,6 +1,6 @@
 package com.example.axon_test.es.health;
 
-import com.example.axon_test.config.CustomDomainEventEntryRepository;
+import com.example.axon_test.es.config.CustomDomainEventEntryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.boot.actuate.info.Info;

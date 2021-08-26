@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class ServiceInModelRequest extends ServiceInParam {
+public class ServiceInModelRequest<B> extends ServiceInParam {
 
     /**
      * 渠道代码
@@ -58,14 +58,11 @@ public class ServiceInModelRequest extends ServiceInParam {
     private String authToken;
 
     /**
-     * 业务数据
+     * 业务数据容器
      */
-    private String bizContent;
+    private B bizContent;
 
-    /**
-     * 业务数据对应模型
-     */
-    private Object inBizContent;
+
 
 }
 
