@@ -1,4 +1,4 @@
-package com.example.axon_test.client.account.dto.events;
+package com.example.axon_test.client.account.dto.event;
 
 import com.example.axon_test.client.AbstractEvent;
 import lombok.*;
@@ -8,15 +8,18 @@ import java.math.BigDecimal;
 /**
  * @author xin
  */
+
 @Getter
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-public class MoneyWithdrawEvent extends AbstractEvent {
+public class AccountCreatedEvent extends AbstractEvent {
+    private String accountName;
     private BigDecimal amount;
 
-    public MoneyWithdrawEvent(Long identifier, BigDecimal amount) {
+    public AccountCreatedEvent(Long identifier, String accountName, BigDecimal amount) {
         super(identifier);
+        this.accountName = accountName;
         this.amount = amount;
     }
 }

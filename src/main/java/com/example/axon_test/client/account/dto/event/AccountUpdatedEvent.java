@@ -1,4 +1,4 @@
-package com.example.axon_test.client.account.dto.events;
+package com.example.axon_test.client.account.dto.event;
 
 import com.example.axon_test.client.AbstractEvent;
 import lombok.Getter;

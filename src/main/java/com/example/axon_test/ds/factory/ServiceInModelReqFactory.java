@@ -3,10 +3,13 @@ package com.example.axon_test.ds.factory;
 
 import com.example.axon_test.ds.bean.ServiceAPIKeys;
 import com.example.axon_test.ds.bean.in.ServiceInModelRequest;
+import com.example.axon_test.ds.bean.in.ServiceInOriRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 /**
@@ -14,43 +17,42 @@ import java.util.Map;
  *
  * @author xin
  */
+@AllArgsConstructor
 public class ServiceInModelReqFactory {
+
 
     /**
      * 请求参数->ServiceInModelRequest
      *
-     * @param requestParams Map
-     * @param serviceMsg    String
+     * @param serviceInOriRequest ServiceInOriRequest
      * @return ServiceInModelRequest
      */
-    public static <B> ServiceInModelRequest<B> buildRequest(Map<String, String> requestParams, String serviceMsg, B biz) throws JsonProcessingException {
+    public static <B> ServiceInModelRequest<B> buildRequest(@NotNull ServiceInOriRequest serviceInOriRequest, B biz) throws JsonProcessingException, ClassNotFoundException {
 
+        Map<String,String> requestParams = serviceInOriRequest.getRequestParams();
 
-        if (null != requestParams.get(ServiceAPIKeys.METHOD) && null != serviceMsg) {
-            ServiceInModelRequest<B> inRequest = new ServiceInModelRequest<>();
-            inRequest.setChannelId(requestParams.get(ServiceAPIKeys.CHANNEL_ID));
-            inRequest.setFormat(requestParams.get(ServiceAPIKeys.FORMAT));
-            inRequest.setCharset(requestParams.get(ServiceAPIKeys.CHARSET));
-            inRequest.setMethod(requestParams.get(ServiceAPIKeys.METHOD));
-            inRequest.setSign(requestParams.get(ServiceAPIKeys.SIGN));
-            inRequest.setSignType(requestParams.get(ServiceAPIKeys.SIGN_TYPE));
-            inRequest.setTimestamp(requestParams.get(ServiceAPIKeys.TIMESTAMP));
-            inRequest.setVersion(requestParams.get(ServiceAPIKeys.VERSION));
-            inRequest.setAuthToken(requestParams.get(ServiceAPIKeys.AUTH_TOKEN));
+        ServiceInModelRequest<B> inRequest = new ServiceInModelRequest<>();
+        inRequest.setChannel(requestParams.get(ServiceAPIKeys.CHANNEL));
+        inRequest.setFormat(requestParams.get(ServiceAPIKeys.FORMAT));
+        inRequest.setCharset(requestParams.get(ServiceAPIKeys.CHARSET));
+        inRequest.setApi(requestParams.get(ServiceAPIKeys.API));
+        inRequest.setSign(requestParams.get(ServiceAPIKeys.SIGN));
+        inRequest.setSignType(requestParams.get(ServiceAPIKeys.SIGN_TYPE));
+        inRequest.setTimestamp(requestParams.get(ServiceAPIKeys.TIMESTAMP));
+        inRequest.setVersion(requestParams.get(ServiceAPIKeys.VERSION));
+        inRequest.setAuthToken(requestParams.get(ServiceAPIKeys.AUTH_TOKEN));
 
-            if (null == requestParams.get(ServiceAPIKeys.FORMAT) || "json".equalsIgnoreCase(requestParams.get(ServiceAPIKeys.FORMAT))) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                biz = objectMapper.readValue(serviceMsg, new TypeReference<>() {
-                });
-                inRequest.setBizContent(biz);
-            }
+        String bizStr = requestParams.get(ServiceAPIKeys.ServiceInServiceKeys.BIZ_CONTENT);
 
-
-            return inRequest;
+        if (null == requestParams.get(ServiceAPIKeys.FORMAT) || "json".equalsIgnoreCase(requestParams.get(ServiceAPIKeys.FORMAT))) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            biz = objectMapper.readValue(bizStr, new TypeReference<>(){ });
+            inRequest.setBizContent(biz);
+        } else {
+            inRequest.setBizContent(null);
         }
 
-
-        return null;
+        return inRequest;
     }
 
 }

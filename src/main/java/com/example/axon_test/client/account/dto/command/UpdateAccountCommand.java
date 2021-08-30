@@ -1,4 +1,4 @@
-package com.example.axon_test.client.account.dto.commands;
+package com.example.axon_test.client.account.dto.command;
 
 
 import com.example.axon_test.client.AbstractCommand;

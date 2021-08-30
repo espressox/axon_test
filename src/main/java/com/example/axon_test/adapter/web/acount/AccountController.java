@@ -2,9 +2,9 @@ package com.example.axon_test.adapter.web.acount;
 
 import com.example.axon_test.client.DomainEventTopic;
 import com.example.axon_test.app.account.aggregate.AccountAggregate;
-import com.example.axon_test.client.account.dto.commands.CreateAccountCommand;
-import com.example.axon_test.client.account.dto.commands.QueryAccountCommand;
-import com.example.axon_test.client.account.dto.commands.UpdateAccountCommand;
+import com.example.axon_test.client.account.dto.command.CreateAccountCommand;
+import com.example.axon_test.client.account.dto.command.QueryAccountCommand;
+import com.example.axon_test.client.account.dto.command.UpdateAccountCommand;
 import com.example.axon_test.es.config.CustomCommandGateway;
 import com.example.axon_test.es.meta.MetaDataInterface;
 import com.example.axon_test.es.meta.MetaDataUser;

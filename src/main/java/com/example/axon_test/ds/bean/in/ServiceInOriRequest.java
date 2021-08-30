@@ -22,8 +22,10 @@ public class ServiceInOriRequest extends ServiceInParam {
      */
     private Map<String, String> requestParams;
 
+
+
     /**
-     * @param requestParams Map<String, String>
+     * @param requestParams Map<String, Object>
      */
     public ServiceInOriRequest(Map<String, String> requestParams) {
         super();

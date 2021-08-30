@@ -1,7 +1,7 @@
 package com.example.axon_test.infrastructure.account.service;
 
 import com.example.axon_test.app.account.aggregate.AccountAggregate;
-import com.example.axon_test.client.account.dto.commands.QueryAccountCommand;
+import com.example.axon_test.client.account.dto.command.QueryAccountCommand;
 import com.example.axon_test.infrastructure.account.repo.AccountView;
 import com.example.axon_test.infrastructure.account.repo.AccountViewRepository;
 import com.example.axon_test.infrastructure.account.mapper.AccountAggregateViewMapper;

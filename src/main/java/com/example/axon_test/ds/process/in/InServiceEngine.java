@@ -2,12 +2,15 @@ package com.example.axon_test.ds.process.in;
 
 ;
 import com.alibaba.cola.domain.DomainFactory;
+import com.example.axon_test.domain.ApiToExecutorDef;
 import com.example.axon_test.domain.ApiToModelDef;
 import com.example.axon_test.ds.bean.ResultEnum;
 import com.example.axon_test.ds.bean.ServiceAPIKeys;
 import com.example.axon_test.ds.bean.in.*;
 import com.example.axon_test.ds.bean.process.Instruction;
 import com.example.axon_test.ds.exception.ProcessException;
+import com.example.axon_test.ds.factory.InServiceExecutorFactory;
+import com.example.axon_test.ds.factory.ServiceAPIDefFactory;
 import com.example.axon_test.ds.factory.ServiceInModelReqFactory;
 import com.example.axon_test.ds.process.ServiceEngineTemplate;
 import com.example.axon_test.ds.process.ServiceExecutor;
@@ -18,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -37,8 +41,10 @@ public class InServiceEngine extends ServiceEngineTemplate {
     /**
      * 请求服务执行器注入
      */
-    @Resource
-    private Map<String, InServiceExecutor> executorMap;
+    private  InServiceExecutorFactory inServiceExecutorFactory;
+
+    private ServiceAPIDefFactory serviceAPIDefFactory;
+
 
     /**
      * 执行前操作
@@ -50,26 +56,18 @@ public class InServiceEngine extends ServiceEngineTemplate {
         InProcessContext inProcessContext = instruction.getInstruction(InProcessContext.class);
         ServiceInOriRequest serviceInOriRequest = instruction.getInstruction(ServiceInOriRequest.class);
 
-        String serviceMsg = null;
-        String method = null;
         try {
-            // 2.请求转换
-            serviceMsg = serviceInOriRequest.getRequestParams().get(ServiceAPIKeys.ServiceInServiceKeys.BIZ_CONTENT);
-            method = serviceInOriRequest.getRequestParams().get(ServiceAPIKeys.METHOD);
-
-            String classForName = ApiToModelDef.getModelByApi(method);
+            // 1.请求转换
+            String modelName = serviceAPIDefFactory.getModelByApi(serviceInOriRequest.getRequestParams().get(ServiceAPIKeys.API));
             ServiceInModelRequest<?> serviceInModelRequest = ServiceInModelReqFactory
-                    .buildRequest(serviceInOriRequest.getRequestParams(), serviceMsg, DomainFactory.create(Class.forName(classForName)));
+                    .buildRequest(serviceInOriRequest, DomainFactory.create(Class.forName(modelName)));
+
+            // 2.check token
+            //TODO
 
             inProcessContext.setServiceInModelRequest(serviceInModelRequest);
             log.info("InServiceEngine Original Request[" + serviceInOriRequest + "]");
         } catch (Exception e) {
-            if (null == inProcessContext.getServiceInModelRequest()) {
-                ServiceInModelRequest<String> modelRequest = new ServiceInModelRequest<>();
-                modelRequest.setMethod(method);
-                modelRequest.setBizContent(serviceMsg);
-                inProcessContext.setServiceInModelRequest(modelRequest);
-            }
             log.error("InServiceEngine ERROR[" + e.getMessage() + "]");
             throw new ProcessException(e, ResultEnum.SYSTEM_ERROR);
         }
@@ -87,7 +85,8 @@ public class InServiceEngine extends ServiceEngineTemplate {
         InProcessContext inProcessContext = instruction.getInstruction(InProcessContext.class);
         ServiceInModelRequest<?> serviceInModelRequest = inProcessContext.getInstruction(ServiceInModelRequest.class);
         //2.获取服务
-        ServiceExecutor serviceExecutor = executorMap.get(serviceInModelRequest.getMethod());
+        String executorName = serviceAPIDefFactory.getExeByApi(serviceInModelRequest.getApi());
+        ServiceExecutor serviceExecutor = inServiceExecutorFactory.getExecutorByName(executorName);
 
         //3.执行服务
         if (serviceExecutor == null) {
@@ -97,11 +96,11 @@ public class InServiceEngine extends ServiceEngineTemplate {
             inProcessContext.setServiceInOriResponse(serviceInOriResponse);
 
             log.warn("当前API执行引擎不存在.[executorName="
-                    + serviceInModelRequest.getMethod() + "]");
+                    + serviceInModelRequest.getApi() + "]");
 
             throw new ProcessException(ResultEnum.NO_SUCH_EXECUTOR.getResultCode(),
                     String.format(ResultEnum.NO_SUCH_EXECUTOR.getResultMsg(),
-                            serviceInModelRequest.getMethod()));
+                            serviceInModelRequest.getApi()));
         } else {
             serviceExecutor.doAction(instruction);
         }
@@ -169,7 +168,7 @@ public class InServiceEngine extends ServiceEngineTemplate {
 
         if (null == serviceInModelRequest) {
             serviceInModelRequest = new ServiceInModelRequest<>();
-            serviceInModelRequest.setMethod("");
+            serviceInModelRequest.setApi("");
         }
 
         if (e instanceof ProcessException) {

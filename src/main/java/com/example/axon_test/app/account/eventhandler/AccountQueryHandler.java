@@ -1,6 +1,6 @@
 package com.example.axon_test.app.account.eventhandler;
 
-import com.example.axon_test.client.account.dto.commands.QueryAccountCommand;
+import com.example.axon_test.client.account.dto.command.QueryAccountCommand;
 import com.example.axon_test.app.account.aggregate.AccountAggregate;
 import com.example.axon_test.es.config.CustomEventSourcingRepository;
 import lombok.AllArgsConstructor;

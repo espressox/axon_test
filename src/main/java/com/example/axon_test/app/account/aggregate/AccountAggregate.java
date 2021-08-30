@@ -1,11 +1,11 @@
 package com.example.axon_test.app.account.aggregate;
 
-import com.example.axon_test.client.account.dto.commands.CreateAccountCommand;
-import com.example.axon_test.client.account.dto.commands.UpdateAccountCommand;
-import com.example.axon_test.client.account.dto.commands.WithdrawMoneyCommand;
-import com.example.axon_test.client.account.dto.events.AccountCreatedEvent;
-import com.example.axon_test.client.account.dto.events.AccountUpdatedEvent;
-import com.example.axon_test.client.account.dto.events.MoneyWithdrawEvent;
+import com.example.axon_test.client.account.dto.command.CreateAccountCommand;
+import com.example.axon_test.client.account.dto.command.UpdateAccountCommand;
+import com.example.axon_test.client.account.dto.command.WithdrawMoneyCommand;
+import com.example.axon_test.client.account.dto.event.AccountCreatedEvent;
+import com.example.axon_test.client.account.dto.event.AccountUpdatedEvent;
+import com.example.axon_test.client.account.dto.event.MoneyWithdrawEvent;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;

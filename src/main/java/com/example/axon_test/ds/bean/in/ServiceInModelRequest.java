@@ -1,6 +1,7 @@
 package com.example.axon_test.ds.bean.in;
 
 
+import com.example.axon_test.ds.process.ServiceExecutor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,12 +16,12 @@ public class ServiceInModelRequest<B> extends ServiceInParam {
     /**
      * 渠道代码
      */
-    private String channelId;
+    private String channel;
 
     /**
      * 服务api名称
      */
-    private String method;
+    private String api;
 
     /**
      * JSON or XML
@@ -61,6 +62,7 @@ public class ServiceInModelRequest<B> extends ServiceInParam {
      * 业务数据容器
      */
     private B bizContent;
+
 
 
 

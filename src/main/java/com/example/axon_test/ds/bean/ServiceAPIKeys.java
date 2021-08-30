@@ -9,12 +9,12 @@ public final class ServiceAPIKeys {
     /**
      * 渠道ID
      */
-    public final static String CHANNEL_ID = "channelId";
+    public final static String CHANNEL = "channel";
 
     /**
      * 调用的服务
      */
-    public final static String METHOD = "method";
+    public final static String API = "api";
 
     /**
      * JSON or XML

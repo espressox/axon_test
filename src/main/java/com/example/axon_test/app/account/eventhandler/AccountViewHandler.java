@@ -1,7 +1,7 @@
 package com.example.axon_test.app.account.eventhandler;
 
 import com.example.axon_test.client.DomainEventTopic;
-import com.example.axon_test.client.account.dto.events.AccountCreatedEvent;
+import com.example.axon_test.client.account.dto.event.AccountCreatedEvent;
 import com.example.axon_test.es.event.DomainEvent;
 import com.example.axon_test.es.consumer.StreamEventHandler;
 import com.example.axon_test.infrastructure.account.service.AccountViewService;

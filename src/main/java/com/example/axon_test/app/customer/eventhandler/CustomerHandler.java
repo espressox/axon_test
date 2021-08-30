@@ -2,6 +2,7 @@ package com.example.axon_test.app.customer.eventhandler;
 
 
 import com.example.axon_test.client.DomainEventTopic;
+import com.example.axon_test.client.customer.dto.event.CustomerEvent;
 import com.example.axon_test.ds.bean.in.InProcessContext;
 import com.example.axon_test.ds.bean.in.ServiceInOriRequest;
 import com.example.axon_test.ds.factory.ServiceInOriReqFactory;
@@ -28,7 +29,7 @@ public class CustomerHandler {
     private InServiceEngine inServiceEngine;
 
     @StreamEventHandler(types = DomainEventTopic.CUSTOMER_TOPIC)
-    public void handle(RevaluationEvent revaluationEvent, DomainEvent<HashMap, HashMap> domainEvent) {
+    public void handle(CustomerEvent customerEvent, DomainEvent<HashMap, HashMap> domainEvent) {
         ServiceInOriRequest serviceInOriRequest = ServiceInOriReqFactory.buildRequest(domainEvent);
         InProcessContext inProcessContext = InProcessContext.getInstance().build(serviceInOriRequest);
         inServiceEngine.serviceProcess(inProcessContext);
