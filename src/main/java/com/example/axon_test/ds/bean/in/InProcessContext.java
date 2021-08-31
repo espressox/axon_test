@@ -66,7 +66,7 @@ public class InProcessContext extends ProcessContext {
             return (T) this.serviceInModelRequest;
         } else if (t == ServiceInModelResponse.class) {
 
-            return (T) this.serviceInModelRequest;
+            return (T) this.serviceInModelResponse;
         } else if (t == ServiceInOriRequest.class) {
 
             return (T) this.serviceInOriRequest;
