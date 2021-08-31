@@ -1,16 +1,11 @@
 package com.example.axon_test.ds.process.in;
 
 ;
-import com.alibaba.cola.domain.DomainFactory;
-import com.example.axon_test.domain.ApiToExecutorDef;
-import com.example.axon_test.domain.ApiToModelDef;
 import com.example.axon_test.ds.bean.ResultEnum;
-import com.example.axon_test.ds.bean.ServiceAPIKeys;
 import com.example.axon_test.ds.bean.in.*;
 import com.example.axon_test.ds.bean.process.Instruction;
 import com.example.axon_test.ds.exception.ProcessException;
 import com.example.axon_test.ds.factory.InServiceExecutorFactory;
-import com.example.axon_test.ds.factory.ServiceAPIDefFactory;
 import com.example.axon_test.ds.factory.ServiceInModelReqFactory;
 import com.example.axon_test.ds.process.ServiceEngineTemplate;
 import com.example.axon_test.ds.process.ServiceExecutor;
@@ -19,10 +14,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -43,7 +34,6 @@ public class InServiceEngine extends ServiceEngineTemplate {
      */
     private  InServiceExecutorFactory inServiceExecutorFactory;
 
-    private ServiceAPIDefFactory serviceAPIDefFactory;
 
 
     /**
@@ -56,11 +46,11 @@ public class InServiceEngine extends ServiceEngineTemplate {
         InProcessContext inProcessContext = instruction.getInstruction(InProcessContext.class);
         ServiceInOriRequest serviceInOriRequest = instruction.getInstruction(ServiceInOriRequest.class);
 
+
         try {
             // 1.请求转换
-            String modelName = serviceAPIDefFactory.getModelByApi(serviceInOriRequest.getRequestParams().get(ServiceAPIKeys.API));
             ServiceInModelRequest<?> serviceInModelRequest = ServiceInModelReqFactory
-                    .buildRequest(serviceInOriRequest, DomainFactory.create(Class.forName(modelName)));
+                    .buildRequest(serviceInOriRequest);
 
             // 2.check token
             //TODO
@@ -85,8 +75,7 @@ public class InServiceEngine extends ServiceEngineTemplate {
         InProcessContext inProcessContext = instruction.getInstruction(InProcessContext.class);
         ServiceInModelRequest<?> serviceInModelRequest = inProcessContext.getInstruction(ServiceInModelRequest.class);
         //2.获取服务
-        String executorName = serviceAPIDefFactory.getExeByApi(serviceInModelRequest.getApi());
-        ServiceExecutor serviceExecutor = inServiceExecutorFactory.getExecutorByName(executorName);
+        ServiceExecutor serviceExecutor = inServiceExecutorFactory.getExecutorByName(serviceInModelRequest.getApi());
 
         //3.执行服务
         if (serviceExecutor == null) {

@@ -9,7 +9,7 @@ public final class ServiceAPIKeys {
     /**
      * 渠道ID
      */
-    public final static String CHANNEL = "channel";
+    public final static String APP_ID = "appId";
 
     /**
      * 调用的服务

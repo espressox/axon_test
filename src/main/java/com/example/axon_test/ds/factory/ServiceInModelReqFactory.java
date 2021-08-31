@@ -27,29 +27,37 @@ public class ServiceInModelReqFactory {
      * @param serviceInOriRequest ServiceInOriRequest
      * @return ServiceInModelRequest
      */
-    public static <B> ServiceInModelRequest<B> buildRequest(@NotNull ServiceInOriRequest serviceInOriRequest, B biz) throws JsonProcessingException, ClassNotFoundException {
+    public static <B> ServiceInModelRequest<B> buildRequest(@NotNull ServiceInOriRequest serviceInOriRequest) throws JsonProcessingException, ClassNotFoundException {
 
-        Map<String,String> requestParams = serviceInOriRequest.getRequestParams();
+        Map<String, String> requestParams = serviceInOriRequest.getRequestParams();
 
         ServiceInModelRequest<B> inRequest = new ServiceInModelRequest<>();
-        inRequest.setChannel(requestParams.get(ServiceAPIKeys.CHANNEL));
-        inRequest.setFormat(requestParams.get(ServiceAPIKeys.FORMAT));
-        inRequest.setCharset(requestParams.get(ServiceAPIKeys.CHARSET));
-        inRequest.setApi(requestParams.get(ServiceAPIKeys.API));
-        inRequest.setSign(requestParams.get(ServiceAPIKeys.SIGN));
-        inRequest.setSignType(requestParams.get(ServiceAPIKeys.SIGN_TYPE));
-        inRequest.setTimestamp(requestParams.get(ServiceAPIKeys.TIMESTAMP));
-        inRequest.setVersion(requestParams.get(ServiceAPIKeys.VERSION));
-        inRequest.setAuthToken(requestParams.get(ServiceAPIKeys.AUTH_TOKEN));
 
-        String bizStr = requestParams.get(ServiceAPIKeys.ServiceInServiceKeys.BIZ_CONTENT);
-
-        if (null == requestParams.get(ServiceAPIKeys.FORMAT) || "json".equalsIgnoreCase(requestParams.get(ServiceAPIKeys.FORMAT))) {
+        if (requestParams.containsKey("ORI_REQ")) {
             ObjectMapper objectMapper = new ObjectMapper();
-            biz = objectMapper.readValue(bizStr, new TypeReference<>(){ });
-            inRequest.setBizContent(biz);
+            inRequest = objectMapper.readValue(requestParams.get("ORI_REQ"), new TypeReference<>() {
+            });
         } else {
-            inRequest.setBizContent(null);
+            inRequest.setAppId(requestParams.get(ServiceAPIKeys.APP_ID));
+            inRequest.setFormat(requestParams.get(ServiceAPIKeys.FORMAT));
+            inRequest.setCharset(requestParams.get(ServiceAPIKeys.CHARSET));
+            inRequest.setApi(requestParams.get(ServiceAPIKeys.API));
+            inRequest.setSign(requestParams.get(ServiceAPIKeys.SIGN));
+            inRequest.setSignType(requestParams.get(ServiceAPIKeys.SIGN_TYPE));
+            inRequest.setTimestamp(requestParams.get(ServiceAPIKeys.TIMESTAMP));
+            inRequest.setVersion(requestParams.get(ServiceAPIKeys.VERSION));
+            inRequest.setAuthToken(requestParams.get(ServiceAPIKeys.AUTH_TOKEN));
+
+            String bizStr = requestParams.get(ServiceAPIKeys.ServiceInServiceKeys.BIZ_CONTENT);
+
+            if (null == requestParams.get(ServiceAPIKeys.FORMAT) || "json".equalsIgnoreCase(requestParams.get(ServiceAPIKeys.FORMAT))) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                B biz = objectMapper.readValue(bizStr, new TypeReference<>() {
+                });
+                inRequest.setBizContent(biz);
+            } else {
+                inRequest.setBizContent(null);
+            }
         }
 
         return inRequest;

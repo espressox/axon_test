@@ -4,9 +4,6 @@ package com.example.axon_test.ds.factory;
 
 import com.example.axon_test.ds.bean.in.ServiceInOriRequest;
 import com.example.axon_test.es.event.DomainEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -31,13 +28,11 @@ public class ServiceInOriReqFactory {
 
     }
 
-    public static ServiceInOriRequest buildRequest(String reqJson) throws JsonProcessingException {
+    public static ServiceInOriRequest buildRequest(String reqJson)  {
 
-        ObjectMapper objectMapper = new ObjectMapper();
 
-        Map<String, String> reqMap = objectMapper.readValue(reqJson, new TypeReference<>() {
-        });
-
+        Map<String, String> reqMap = new HashMap<>();
+        reqMap.put("ORI_REQ", reqJson);
         return new ServiceInOriRequest(reqMap);
 
     }

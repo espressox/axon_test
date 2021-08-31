@@ -3,6 +3,7 @@ package com.example.axon_test.app.customer;
 import com.alibaba.cola.dto.MultiResponse;
 import com.example.axon_test.client.customer.api.CustomerServiceI;
 import com.example.axon_test.ds.bean.in.InProcessContext;
+import com.example.axon_test.ds.bean.in.ServiceInModelRequest;
 import com.example.axon_test.ds.bean.in.ServiceInOriRequest;
 import com.example.axon_test.ds.bean.in.ServiceInOriResponse;
 import com.example.axon_test.ds.factory.ServiceInOriReqFactory;
@@ -25,7 +26,7 @@ public class CustomerServiceImpl implements CustomerServiceI {
 
 
     @Override
-    public <T> MultiResponse<T> customerSvc(String reqJson) throws JsonProcessingException {
+    public <T> MultiResponse<T> customerSvc(String reqJson) {
         InProcessContext inProcessContext = new InProcessContext();
         ServiceInOriRequest serviceInOriRequest = ServiceInOriReqFactory.buildRequest(reqJson);
         inProcessContext.build(serviceInOriRequest);
